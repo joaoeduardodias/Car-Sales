@@ -17,19 +17,19 @@ export class CarsService {
     return car;
   }
 
-  findAll() {
-    return `This action returns all cars`;
+  async findAll(): Promise<Car[]> {
+    return await this.carModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} car`;
+  async findOne(id: string): Promise<Car> {
+    return await this.carModel.findById({ _id: id });
   }
 
-  update(id: number, updateCarDto: UpdateCarDto) {
-    return `This action updates a #${id} car`;
+  async update(id: string, updateCarDto: UpdateCarDto): Promise<void> {
+    await this.carModel.findOneAndUpdate({ _id: id }, updateCarDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} car`;
+  async remove(id: string): Promise<void> {
+    await this.carModel.deleteOne({ _id: id });
   }
 }
