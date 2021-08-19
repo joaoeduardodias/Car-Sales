@@ -5,6 +5,16 @@ import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
 import { Car } from './entities/car.entity';
 
+interface IRequest {
+  brand?: string;
+  model?: string;
+  version?: string;
+  mileage?: string;
+  type_of_exchange?: string;
+  year?: string;
+  sale_price: string;
+}
+
 @Injectable()
 export class CarsService {
   constructor(
@@ -17,7 +27,66 @@ export class CarsService {
     return car;
   }
 
-  async findAll(): Promise<Car[]> {
+  async findAll({
+    brand,
+    mileage,
+    model,
+    type_of_exchange,
+    version,
+    year,
+    sale_price,
+  }: IRequest): Promise<Car[]> {
+    // range
+    if (year) {
+      if (brand) {
+        return await this.carModel.find({ brand }).sort({ year: year });
+      }
+      if (mileage) {
+        return await this.carModel.find({ mileage }).sort({ year: year });
+      }
+      if (model) {
+        return await this.carModel.find({ model }).sort({ year: year });
+      }
+      if (type_of_exchange) {
+        return await this.carModel
+          .find({ type_of_exchange })
+          .sort({ year: year });
+      }
+      if (version) {
+        return await this.carModel.find({ version }).sort({ year: year });
+      }
+
+      return await this.carModel.find().sort({ year: year });
+    }
+    if (sale_price) {
+      if (brand) {
+        return await this.carModel
+          .find({ brand })
+          .sort({ sale_price: sale_price });
+      }
+      if (mileage) {
+        return await this.carModel
+          .find({ mileage })
+          .sort({ sale_price: sale_price });
+      }
+      if (model) {
+        return await this.carModel
+          .find({ model })
+          .sort({ sale_price: sale_price });
+      }
+      if (type_of_exchange) {
+        return await this.carModel
+          .find({ type_of_exchange })
+          .sort({ sale_price: sale_price });
+      }
+      if (version) {
+        return await this.carModel
+          .find({ version })
+          .sort({ sale_price: sale_price });
+      }
+
+      return await this.carModel.find().sort({ sale_price: sale_price });
+    }
     return await this.carModel.find();
   }
 

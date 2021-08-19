@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { CarsService } from './cars.service';
 import { CreateCarDto } from './dto/create-car.dto';
@@ -21,8 +22,19 @@ export class CarsController {
   }
 
   @Get()
-  findAll() {
-    return this.carsService.findAll();
+  findAll(
+    @Query()
+    query,
+  ) {
+    return this.carsService.findAll({
+      brand: query.brand,
+      mileage: query.mileage,
+      model: query.model,
+      type_of_exchange: query.type_of_exchange,
+      version: query.version,
+      year: query.year,
+      sale_price: query.sale_price,
+    });
   }
 
   @Get(':id')
